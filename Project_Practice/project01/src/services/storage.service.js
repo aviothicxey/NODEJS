@@ -11,9 +11,7 @@ async function uploadFile(buffer){
         file:buffer.toString("base_64"),
         fileName : "image.jpg",
     })
-    return result.status(201).json({
-        message : "post created",
-    })
+   return result;
 }
 
 module.exports = uploadFile;

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const postSchema = new mongoose.postSchema({
+const postSchema = new mongoose.schema({
     image:String,
     caption: String,
 })
@@ -8,4 +8,4 @@ const postSchema = new mongoose.postSchema({
 const postModel = mongoose.model("post",postSchema);
 
 
-module.exports = postModel;
+module.exports = postModel; 
