@@ -1,4 +1,4 @@
-const {ImageKit} = require('@imagekit/nodejs');
+const {ImageKit} = require('@imagekit/nodejs/index.js');
 
 
 const imagekit = new ImageKit({
