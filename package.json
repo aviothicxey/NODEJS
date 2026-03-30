@@ -1,9 +1,4 @@
 {
-  "dependencies": {
-    "ejs": "^4.0.1",
-    "express": "^5.2.1",
-    "prompt-sync": "^4.2.0"
-  },
   "name": "class",
   "version": "1.0.0",
   "description": "",
@@ -15,5 +10,8 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "devDependencies": {}
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.3.3"
+  }
 }
