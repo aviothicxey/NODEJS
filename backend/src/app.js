@@ -1,12 +1,14 @@
-const express = require('express');
-
+const express = require("express");
 const app = express();
 
-app.use(express.json());
-app.use('/api/auth' , authRouter);
+const authRoutes = require("./routes/auth.routes");
+const cors = require("cors");
 
-app.get('/', (req, res) => {
-    res.send('BEE Class');
-});
+
+app.use(express.json());
+app.use(cors());
+
+// ROUTES MOUNT
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
