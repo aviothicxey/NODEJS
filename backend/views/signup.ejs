@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 360px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 28px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 4px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #6c5ce7;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Create Account</h2>
+
+    <form id="signupForm">
+      <input type="text" name="firstName" placeholder="First Name" required />
+      <input type="text" name="lastName" placeholder="Last Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="number" name="age" placeholder="Age (optional)" />
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <p id="message" class="message"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("signupForm");
+    const messageEl = document.getElementById("message");
+
+    function setMessage(text, isSuccess) {
+      messageEl.textContent = text || "";
+      messageEl.className = "message " + (isSuccess ? "success" : "error");
+    }
+
+    function validate(formData) {
+      if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
+        return "All required fields must be filled";
+      }
+
+      if (formData.password.length < 6) {
+        return "Password must be at least 6 characters";
+      }
+
+      if (formData.password !== formData.confirmPassword) {
+        return "Passwords do not match";
+      }
+
+      return null;
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = {
+        firstName: form.firstName.value.trim(),
+        lastName: form.lastName.value.trim(),
+        email: form.email.value.trim(),
+        age: form.age.value ? Number(form.age.value) : undefined,
+        password: form.password.value,
+        confirmPassword: form.confirmPassword.value
+      };
+
+      const validationError = validate(formData);
+      if (validationError) {
+        setMessage(validationError, false);
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            age: formData.age,
+            password: formData.password
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          setMessage(result.message || "Signup failed", false);
+          return;
+        }
+
+        setMessage(result.message || "Signup successful", true);
+        form.reset();
+      } catch (error) {
+        setMessage("Signup failed", false);
+      }
+    });
+  </script>
+</body>
+</html>
