@@ -4,11 +4,13 @@ const bcrypt = require("bcrypt");
 // SIGNUP
 exports.signup = async (req, res) => {
   try {
-const { firstName, lastName, email, age, password } = req.body;
+    const { firstName, lastName, email, age, password } = req.body;
+    const profileImage = req.file ? `/uploads/${req.file.filename}` : "";
+
     // validation
-   if (!firstName || !lastName || !email || !password) {
-  return res.status(400).json({ message: "All fields required" });
-}
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ message: "All fields required" });
+    }
 
     // check existing user
     const existingUser = await User.findOne({ email });
@@ -20,17 +22,21 @@ const { firstName, lastName, email, age, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // save user
-   const user = new User({
-  firstName,
-  lastName,
-  email,
-  age,
-  password: hashedPassword,
-});
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      age: age ? Number(age) : undefined,
+      password: hashedPassword,
+      profileImage,
+    });
 
     await user.save();
 
-    res.status(201).json({ message: "Signup successful" });
+    res.status(201).json({
+      message: "Signup successful",
+      profileImage: user.profileImage,
+    });
 
   } catch (error) {
     res.status(500).json({ message: "Server error", error });

@@ -89,6 +89,7 @@
       <input type="text" name="lastName" placeholder="Last Name" required />
       <input type="email" name="email" placeholder="Email" required />
       <input type="number" name="age" placeholder="Age (optional)" />
+      <input type="file" name="profileImage" accept="image/jpeg,image/png,image/webp" />
       <input type="password" name="password" placeholder="Password" required />
       <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
       <button type="submit">Sign Up</button>
@@ -130,6 +131,7 @@
         lastName: form.lastName.value.trim(),
         email: form.email.value.trim(),
         age: form.age.value ? Number(form.age.value) : undefined,
+        profileImage: form.profileImage.files[0],
         password: form.password.value,
         confirmPassword: form.confirmPassword.value
       };
@@ -141,18 +143,21 @@
       }
 
       try {
+        const payload = new FormData();
+        payload.append("firstName", formData.firstName);
+        payload.append("lastName", formData.lastName);
+        payload.append("email", formData.email);
+        payload.append("password", formData.password);
+        if (formData.age !== undefined) {
+          payload.append("age", String(formData.age));
+        }
+        if (formData.profileImage) {
+          payload.append("profileImage", formData.profileImage);
+        }
+
         const response = await fetch("/api/auth/signup", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            age: formData.age,
-            password: formData.password
-          })
+          body: payload
         });
 
         const result = await response.json();

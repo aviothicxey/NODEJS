@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middleware/multer.middleware");
+const { upload } = require("../middleware/multer.middleware");
 
 router.post("/single", upload.single("file"), (req, res) => {
   if (!req.file) {

@@ -16,12 +16,22 @@ const storage = multer.diskStorage({
   },
 });
 
+const commonImageTypes = ["image/jpeg", "image/png", "image/webp"];
+
 const fileFilter = (req, file, cb) => {
-  const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+  const allowed = [...commonImageTypes, "application/pdf"];
   if (allowed.includes(file.mimetype)) {
     cb(null, true);
   } else {
     cb(new Error("Only JPG, PNG, WEBP and PDF files are allowed"));
+  }
+};
+
+const profileImageFilter = (req, file, cb) => {
+  if (commonImageTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Profile image must be JPG, PNG or WEBP"));
   }
 };
 
@@ -33,4 +43,15 @@ const upload = multer({
   },
 });
 
-module.exports = upload;
+const profileImageUpload = multer({
+  storage,
+  fileFilter: profileImageFilter,
+  limits: {
+    fileSize: 2 * 1024 * 1024,
+  },
+});
+
+module.exports = {
+  upload,
+  profileImageUpload,
+};
