@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Add Employee</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg-1: #0f1324;
+                --bg-2: #1c2c54;
+                --card: #121826;
+                --ink: #f5f7ff;
+                --muted: #a7b0cc;
+                --accent: #ffb347;
+                --accent-2: #58d5ff;
+                --danger: #ff6b6b;
+                --shadow: rgba(14, 19, 36, 0.5);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: "Space Grotesk", sans-serif;
+                color: var(--ink);
+                min-height: 100vh;
+                background:
+                    radial-gradient(circle at 20% 10%, rgba(88, 213, 255, 0.25), transparent 55%),
+                    radial-gradient(circle at 80% 0%, rgba(255, 179, 71, 0.25), transparent 50%),
+                    linear-gradient(160deg, var(--bg-1), var(--bg-2));
+                display: flex;
+                justify-content: center;
+                padding: 40px 16px 64px;
+            }
+
+            .shell {
+                width: min(920px, 100%);
+                display: grid;
+                gap: 24px;
+                animation: fadeUp 0.7s ease both;
+            }
+
+            header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+            }
+
+            .title {
+                display: grid;
+                gap: 6px;
+            }
+
+            .title h1 {
+                margin: 0;
+                font-size: clamp(28px, 4vw, 40px);
+                letter-spacing: -0.02em;
+            }
+
+            .title p {
+                margin: 0;
+                color: var(--muted);
+            }
+
+            nav {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                padding: 10px 16px;
+                border-radius: 999px;
+                border: 1px solid transparent;
+                text-decoration: none;
+                font-weight: 600;
+                color: var(--bg-1);
+                background: linear-gradient(120deg, var(--accent), var(--accent-2));
+                box-shadow: 0 12px 24px var(--shadow);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .btn.secondary {
+                background: transparent;
+                color: var(--ink);
+                border-color: rgba(255, 255, 255, 0.2);
+                box-shadow: none;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+            }
+
+            .card {
+                background: var(--card);
+                padding: 28px;
+                border-radius: 24px;
+                box-shadow: 0 24px 50px var(--shadow);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+            }
+
+            form {
+                display: grid;
+                gap: 18px;
+            }
+
+            .grid {
+                display: grid;
+                gap: 16px;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+
+            label {
+                display: block;
+                font-size: 0.9rem;
+                color: var(--muted);
+                margin-bottom: 6px;
+            }
+
+            input {
+                width: 100%;
+                padding: 12px 14px;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(9, 12, 22, 0.7);
+                color: var(--ink);
+                font-size: 1rem;
+            }
+
+            input:focus {
+                outline: 2px solid rgba(88, 213, 255, 0.5);
+                border-color: transparent;
+            }
+
+            .cta {
+                display: flex;
+                justify-content: flex-end;
+                gap: 12px;
+            }
+
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(16px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 600px) {
+                header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .cta {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="shell">
+            <header>
+                <div class="title">
+                    <h1>Add a new employee</h1>
+                    <p>Capture core details and keep your roster updated.</p>
+                </div>
+                <nav>
+                    <a class="btn" href="/employees">View employees</a>
+                    <a class="btn secondary" href="/add-emp">Add employee</a>
+                </nav>
+            </header>
+
+            <section class="card">
+                <form action="/add-emp" method="POST">
+                    <div class="grid">
+                        <div>
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Alex Morgan" required />
+                        </div>
+                        <div>
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" placeholder="alex.m" required />
+                        </div>
+                        <div>
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" min="16" placeholder="28" required />
+                        </div>
+                        <div>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="alex@company.com" required />
+                        </div>
+                        <div>
+                            <label for="doj">Date of joining</label>
+                            <input type="date" id="doj" name="doj" required />
+                        </div>
+                        <div>
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Create a password" required />
+                        </div>
+                    </div>
+                    <div class="cta">
+                        <button class="btn" type="submit">Save employee</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </body>
+</html>
